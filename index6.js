@@ -165,13 +165,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function fetchAndAutofillDetails() {
         // Autofill date and time
-        const dateField = document.getElementById('date');
-        // const timeField = document.getElementById('time');
+        const dateField = document.getElementById('reportingDateTime');
 
         const now = new Date();
-        // dateField.value = now;
-        dateField.value = now.toLocaleDateString();
-        // timeField.value = now.toLocaleTimeString();
+        dateField.value = now;
 
         // Fetch and autofill location
         const latitudeField = document.getElementById('latitude');
@@ -210,15 +207,6 @@ document.addEventListener("DOMContentLoaded", function () {
     document?.getElementById('contactForm')?.addEventListener('submit', async (event) => {
         event.preventDefault(); // Prevent the default form submission
 
-        let formData = {
-            moduleId: 694,  //  11,
-            isSecurity: routeInfo?.params?.type==='security',
-            lang: currentLang,
-            params: getModPayload(Object.fromEntries(new FormData(event.target))),
-        };
-
-        console.log('formData: ', formData);
-
         const messageElement = document.getElementById('message');
         messageElement.className = 'message';
         messageElement.textContent = '';
@@ -229,10 +217,10 @@ document.addEventListener("DOMContentLoaded", function () {
             const response = await fetch('https://racsharikidev.appiancloud.com/suite/webapi/createCase', {
                 headers: {
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Appian-API-Key': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmYjgwMjdlMi0wMmQ3LTZhMjItMzA4Zi1lMjI0N2ViZGI0NTkifQ.vtwQw8tQH06ftW-C3guvW9oPn15SHjDPNLydTLZpAf4',
                 },
                 method: 'POST',
-                // body: JSON.stringify(formData),
                 body: JSON.stringify(getModPayload(Object.fromEntries(new FormData(event.target)))),
             });
 
@@ -281,7 +269,7 @@ function getModPayload(data) {
           {
             "fieldId": 2,
             "label": "Date and time for reporting",
-            "value": data?.date,
+            "value": data?.reportingDateTime,
             "gridResponse": [
               {}
             ],
@@ -433,7 +421,7 @@ function getModPayload(data) {
           {
             "fieldId": 11,
             "label": "Date and time of the incident",
-            "value": data?.incidentDate,
+            "value": data?.incidentDateTime,
             "gridResponse": [
               {}
             ],
